@@ -5,23 +5,29 @@ import java.io.InputStream;
 
 public class CardReader {
 
-    private static InputStream in = null;
     private static SerialPort comPort = null;
+    private static CardReader instance = null;
 
-    public void initializeReader(){
+    private CardReader() {
         comPort = SerialPort.getCommPort("/dev/ttyACM0");
         comPort.openPort();
         comPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 0, 0);
-        in = comPort.getInputStream();
+    }
 
+    public static CardReader getInstance() {
+        if (instance == null) {
+            instance = new CardReader();
+        }
+        return instance;
     }
 
     public InputStream getInputStream() {
-        return in;
+        return comPort.getInputStream();
     }
 
     public void close() throws IOException {
         comPort.closePort();
-        in.close();
+        comPort = null;
+        instance = null;
     }
 }
