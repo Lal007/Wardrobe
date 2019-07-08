@@ -18,6 +18,21 @@ public class LocalDB {
         stmt = conn.createStatement();
     }
 
+    public void takeCell(int cellNumber, String card) throws SQLException {
+        String sql = String.format("UPDATE cells SET card = '%s' WHERE id = '%d';", card, cellNumber);
+        stmt.executeUpdate(sql);
+    }
+
+    public void emptyCell(String card){
+        String sql = String.format("UPDATE cells SET card = NULL WHERE card = '%s';", card);
+    }
+
+    public int getIdByCard(String card) throws SQLException {
+        String sql = String.format("SELECT id FROM cells WHERE card = '%s';", card);
+        ResultSet rs = stmt.executeQuery(sql);
+        return rs.getInt(1);
+    }
+
     public void writeToDB(int id, String card) throws SQLException {
         String sql = String.format("INSERT INTO cells (id, card) VALUES ('%d', '%s');" , id, card);
         stmt.executeUpdate(sql);

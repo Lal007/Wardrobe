@@ -72,23 +72,23 @@ public class GPIOdriver {
         pins.add(pin24);
     }
 
-    public void open(Cells cell){
-        switch (cell.ordinal()){
-            case(0): pins.get(0).pulse(1000, true);
+    public void open(int cell){
+        switch (cell){
+            case (1): pins.get(0).pulse(1000, true);
                     break;
-            case (1): pins.get(1).pulse(1000, true);
+            case (2): pins.get(1).pulse(1000, true);
                     break;
-            case (2): pins.get(2).pulse(1000, true);
+            case (3): pins.get(2).pulse(1000, true);
                     break;
-            case (3): pins.get(3).pulse(1000, true);
+            case (4): pins.get(3).pulse(1000, true);
                     break;
-            case (4): pins.get(4).pulse(1000, true);
+            case (5): pins.get(4).pulse(1000, true);
                     break;
-            case (5): pins.get(5).pulse(1000, true);
+            case (6): pins.get(5).pulse(1000, true);
                     break;
-            case (6): pins.get(6).pulse(1000, true);
+            case (7): pins.get(6).pulse(1000, true);
                     break;
-            case (7): pins.get(7).pulse(1000, true);
+            case (8): pins.get(7).pulse(1000, true);
                     break;
         }
     }

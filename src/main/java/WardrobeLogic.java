@@ -20,18 +20,24 @@ public class WardrobeLogic {
 
         WardrobeLogic logic = new WardrobeLogic();
 
-        logic.init();
+        logic.init(); // Инициализация всех подключений
 
-        while (true){
+        while (true){ // Основной цикл
 
-            String line;
+            String card;
             try {
-                while ((line = reader.readLine()) != null){
-                    if (localDB.isExist(line)){
+                if ((card = reader.readLine()) != null){
+                    if (localDB.isExist(card)){ // Если карта есть в базе
                         //Открываем ячейку, удаляем запись из базы
-                    }else{
-                        if(localDB.isAnyEmptyCell()){
+                        localDB.emptyCell(card);
+                        gpioDriver.open(localDB.getIdByCard(card));
 
+                    }else{
+                        //Проверяем наличие свободной ячейки, получаем ее номер и записываем в базу с сохранением номера карочки, открываем ячейку
+                        if(localDB.isAnyEmptyCell()){
+                            int cell = localDB.getEmptyCell();
+                            localDB.takeCell(cell, card);
+                            gpioDriver.open(cell);
                         }
                     }
                 }
