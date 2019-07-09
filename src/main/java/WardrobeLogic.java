@@ -42,8 +42,8 @@ public class WardrobeLogic {
                     System.out.println("Card = " + card);
                     if (localDB.isExist(card)){ // Если карта есть в базе
                         //Открываем ячейку, удаляем запись из базы
-                        localDB.emptyCell(card);
                         gpioDriver.open(localDB.getIdByCard(card));
+                        localDB.emptyCell(card);
                         System.out.println("Card exist");
 
                     }else{
