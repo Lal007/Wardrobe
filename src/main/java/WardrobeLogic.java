@@ -47,24 +47,12 @@ public class WardrobeLogic {
                 e.printStackTrace();
             }
         }
-
-        /*LocalDB localDB = new LocalDB();
-
-        try {
-            localDB.tryConnect();
-
-            localDB.writeToDB(42, "Test");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }*/
     }
 
 
     public void init(){
 
-        //Подключение базы данных
+        //Подключение локальной базы данных
         localDB = new LocalDB();
         try {
             localDB.tryConnect();
