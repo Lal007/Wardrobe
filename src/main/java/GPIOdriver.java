@@ -34,10 +34,8 @@ public class GPIOdriver {
         } catch (PlatformAlreadyAssignedException e) {
             e.printStackTrace();
         }
-        
-        final GpioController gpio = GpioFactory.getInstance();
 
-        GpioController gpio = GpioFactory.getInstance();
+        final GpioController gpio = GpioFactory.getInstance();
 
 
         Pin orangePin0 = CommandArgumentParser.getPin(OrangePiPin.class, OrangePiPin.GPIO_00 , "-p 0");
