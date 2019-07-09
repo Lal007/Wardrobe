@@ -25,7 +25,7 @@ public class LocalDB {
         ResultSet rs = stmt.executeQuery(checkSQL);
 
         if (rs.next()){
-            System.out.println("Таблица \"cells\" уже ствует");
+            System.out.println("Таблица \"cells\" уже существует");
         }else {
             String sql = ("CREATE TABLE cells (id INTEGER UNIQUE NOT NULL PRIMARY KEY, card STRING);");
             stmt.execute(sql);

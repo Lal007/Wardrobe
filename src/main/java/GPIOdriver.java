@@ -12,8 +12,7 @@ import java.util.LinkedList;
 public class GPIOdriver {
 
     private static GPIOdriver instance = null;
-    private final GpioController gpio = GpioFactory.getInstance();
-    private LinkedList<GpioPinDigitalOutput> pins;
+    private LinkedList<GpioPinDigitalOutput> pins = new LinkedList<GpioPinDigitalOutput>();
 
     private GPIOdriver() {
         initialize();
@@ -34,6 +33,9 @@ public class GPIOdriver {
         } catch (PlatformAlreadyAssignedException e) {
             e.printStackTrace();
         }
+
+        GpioController gpio = GpioFactory.getInstance();
+
 
         Pin orangePin0 = CommandArgumentParser.getPin(OrangePiPin.class, OrangePiPin.GPIO_00 , "-p 0");
         Pin orangePin3 = CommandArgumentParser.getPin(OrangePiPin.class, OrangePiPin.GPIO_03 , "-p 3");
