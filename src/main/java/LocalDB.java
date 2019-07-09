@@ -44,8 +44,9 @@ public class LocalDB {
         stmt.executeUpdate(sql);
     }
 
-    public void emptyCell(String card){
+    public void emptyCell(String card) throws SQLException {
         String sql = String.format("UPDATE cells SET card = NULL WHERE card = '%s';", card);
+        stmt.executeUpdate(sql);
     }
 
     public int getIdByCard(String card) throws SQLException {
