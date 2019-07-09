@@ -21,10 +21,21 @@ public class WardrobeLogic {
         WardrobeLogic logic = new WardrobeLogic();
 
         logic.init(); // Инициализация всех подключений
+        gpioDriver.turnOnReadyLed(true); //Зажигаем зеленый светодиод
+
+        try {
+            if (localDB.isAnyEmptyCell()){
+                gpioDriver.turnOnFullLed(false);
+            }else {
+                gpioDriver.turnOnFullLed(true);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         while (true){ // Основной цикл
             System.out.println("Wait for card");
-            
+
             String card;
             try {
                 if ((card = reader.readLine()) != null){
@@ -37,7 +48,6 @@ public class WardrobeLogic {
 
                     }else{
                         //Проверяем наличие свободной ячейки, получаем ее номер и записываем в базу с сохранением номера карочки, открываем ячейку
-                        //System.out.println("Enter branch else");
                         if(localDB.isAnyEmptyCell()){
                             int cell = localDB.getEmptyCell();
                             localDB.takeCell(cell, card);
