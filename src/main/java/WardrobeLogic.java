@@ -56,6 +56,7 @@ public class WardrobeLogic {
         localDB = new LocalDB();
         try {
             localDB.tryConnect();
+            localDB.createTable(); // Создание таблицы (если она есть, то ничего не будет изменено)
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {

@@ -18,6 +18,27 @@ public class LocalDB {
         stmt = conn.createStatement();
     }
 
+    public void createTable() throws SQLException {
+
+        String checkSQL = "SELECT name FROM sqlite_master WHERE type='table' AND name='cells';";
+
+        ResultSet rs = stmt.executeQuery(checkSQL);
+
+        if (rs.next()){
+            System.out.println("Таблица \"cells\" уже ствует");
+        }else {
+            String sql = ("CREATE TABLE cells (id INTEGER UNIQUE NOT NULL PRIMARY KEY, card STRING);");
+            stmt.execute(sql);
+
+            String sql2 = "INSERT INTO cells (card) VALUES (NULL);";
+
+            for (int i = 0; i < 8; i++) {
+                stmt.executeUpdate(sql2);
+            }
+        }
+
+    }
+
     public void takeCell(int cellNumber, String card) throws SQLException {
         String sql = String.format("UPDATE cells SET card = '%s' WHERE id = '%d';", card, cellNumber);
         stmt.executeUpdate(sql);
