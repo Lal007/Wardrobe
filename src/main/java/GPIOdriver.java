@@ -47,6 +47,10 @@ public class GPIOdriver {
         Pin orangePin22 = CommandArgumentParser.getPin(OrangePiPin.class, OrangePiPin.GPIO_22 , "-p 22");
         Pin orangePin24 = CommandArgumentParser.getPin(OrangePiPin.class, OrangePiPin.GPIO_24 , "-p 24");
 
+        Pin orangePin27 = CommandArgumentParser.getPin(OrangePiPin.class, OrangePiPin.GPIO_27 , "-p 27");
+        Pin orangePin28 = CommandArgumentParser.getPin(OrangePiPin.class, OrangePiPin.GPIO_28 , "-p 28");
+        Pin orangePin29 = CommandArgumentParser.getPin(OrangePiPin.class, OrangePiPin.GPIO_29 , "-p 29");
+
         final GpioPinDigitalOutput pin0 = gpio.provisionDigitalOutputPin(orangePin0, "My Pin0", PinState.LOW);
         final GpioPinDigitalOutput pin3 = gpio.provisionDigitalOutputPin(orangePin3, "My Pin3", PinState.LOW);
         final GpioPinDigitalOutput pin12 = gpio.provisionDigitalOutputPin(orangePin12, "My Pin12", PinState.LOW);
@@ -55,6 +59,10 @@ public class GPIOdriver {
         final GpioPinDigitalOutput pin21 = gpio.provisionDigitalOutputPin(orangePin21, "My Pin21", PinState.LOW);
         final GpioPinDigitalOutput pin22 = gpio.provisionDigitalOutputPin(orangePin22, "My Pin22", PinState.LOW);
         final GpioPinDigitalOutput pin24 = gpio.provisionDigitalOutputPin(orangePin24, "My Pin24", PinState.LOW);
+
+        final GpioPinDigitalOutput readyPin = gpio.provisionDigitalOutputPin(orangePin27, "My Pin27", PinState.LOW);
+        final GpioPinDigitalOutput errPin = gpio.provisionDigitalOutputPin(orangePin28, "My Pin28", PinState.LOW);
+        final GpioPinDigitalOutput fullPin = gpio.provisionDigitalOutputPin(orangePin29, "My Pin29", PinState.LOW);
 
         pin0.setShutdownOptions(true, PinState.LOW);
         pin3.setShutdownOptions(true, PinState.LOW);
@@ -73,6 +81,10 @@ public class GPIOdriver {
         pins.add(pin21);
         pins.add(pin22);
         pins.add(pin24);
+
+        pins.add(readyPin);
+        pins.add(errPin);
+        pins.add(fullPin);
     }
 
     public void open(int cell){
@@ -93,6 +105,33 @@ public class GPIOdriver {
                     break;
             case (8): pins.get(7).pulse(1000, true);
                     break;
+        }
+    }
+
+    public void turnOnReadyLed(boolean state){
+        GpioPinDigitalOutput pin = pins.get(8);
+        if (state){
+            pin.high();
+        }else {
+            pin.low();
+        }
+    }
+
+    public void turnOnErrLed(boolean state){
+        GpioPinDigitalOutput pin = pins.get(9);
+        if (state){
+            pin.high();
+        }else {
+            pin.low();
+        }
+    }
+
+    public void turnOnFullLed(boolean state){
+        GpioPinDigitalOutput pin = pins.get(10);
+        if (state){
+            pin.high();
+        }else {
+            pin.low();
         }
     }
 
