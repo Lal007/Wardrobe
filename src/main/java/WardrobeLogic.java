@@ -1,4 +1,5 @@
 import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,8 +39,8 @@ public class WardrobeLogic {
         }
 
         while (true){ // Основной цикл
-            System.out.println("Wait for card");
-
+            System.out.println("Wait for card");            
+            
             String card;
             try {
                 if ((card = reader.readLine()) != null){
@@ -93,6 +94,10 @@ public class WardrobeLogic {
 
         //Подключение к контактам GPIO
         gpioDriver = GPIOdriver.getInstance();
+        
+        //
+        String log4jConfigPath = "/home/impuls/Projects/WardrobeIDEA/Wardrobe-master/src/main/resources/log4j.properties";
+        PropertyConfigurator.configure(log4jConfigPath);
 
     }
 }
