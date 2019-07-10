@@ -1,3 +1,5 @@
+import org.apache.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,6 +17,8 @@ public class WardrobeLogic {
     private static GPIOdriver gpioDriver;
 
     private static BufferedReader reader;
+
+    private static final Logger log = Logger.getLogger(WardrobeLogic.class);
 
     public static void main(String[] args) {
 
@@ -40,11 +44,15 @@ public class WardrobeLogic {
             try {
                 if ((card = reader.readLine()) != null){
                     System.out.println("Card = " + card);
+                    log.info("Считана карта: " + card);
+
                     if (localDB.isExist(card)){ // Если карта есть в базе
                         //Открываем ячейку, удаляем запись из базы
-                        gpioDriver.open(localDB.getIdByCard(card));
+                        int cell = localDB.getIdByCard(card);
+                        gpioDriver.open(cell);
                         localDB.emptyCell(card);
                         System.out.println("Card exist");
+                        log.info("Карте " + card + " соответствует ячейка № " + cell + ". Ячейка освобождена");
 
                     }else{
                         //Проверяем наличие свободной ячейки, получаем ее номер и записываем в базу с сохранением номера карочки, открываем ячейку
@@ -53,6 +61,7 @@ public class WardrobeLogic {
                             localDB.takeCell(cell, card);
                             System.out.println("Empty cell = " + cell);
                             gpioDriver.open(cell);
+                            log.info("Карте " + card + " присвоена пустая ячейка № " + cell);
                         }
                     }
                 }
