@@ -95,7 +95,7 @@ public class WardrobeLogic {
         //Подключение к контактам GPIO
         gpioDriver = GPIOdriver.getInstance();
         
-        //
+        //Подключение конфигуратора для логера
         String log4jConfigPath = "/home/impuls/Projects/WardrobeIDEA/Wardrobe-master/src/main/resources/log4j.properties";
         PropertyConfigurator.configure(log4jConfigPath);
 
