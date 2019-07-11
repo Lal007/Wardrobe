@@ -135,4 +135,26 @@ public class GPIOdriver {
         }
     }
 
+    public void shineUP(){
+        GpioPinDigitalOutput green = pins.get(8);
+        GpioPinDigitalOutput blue = pins.get(9);
+        GpioPinDigitalOutput red = pins.get(10);
+
+        PinState greenState = green.getState();
+        PinState blueState = blue.getState();
+        PinState redState = red.getState();
+
+        green.setState(PinState.LOW);
+        blue.setState(PinState.LOW);
+        red.setState(PinState.LOW);
+
+        red.pulse(500, true);
+        blue.pulse(500, true);
+        green.pulse(500, true);
+
+        green.setState(greenState);
+        blue.setState(blueState);
+        red.setState(redState);
+    }
+
 }

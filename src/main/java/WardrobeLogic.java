@@ -63,6 +63,7 @@ public class WardrobeLogic {
                             System.out.println("Empty cell = " + cell);
                             gpioDriver.open(cell);
                             log.info("Карте " + card + " присвоена пустая ячейка № " + cell);
+                            gpioDriver.shineUP();
                         }
                     }
                 }
