@@ -1,3 +1,4 @@
+import com.pi4j.io.gpio.PinState;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
@@ -26,13 +27,13 @@ public class WardrobeLogic {
         WardrobeLogic logic = new WardrobeLogic();
 
         logic.init(); // Инициализация всех подключений
-        gpioDriver.turnOnReadyLed(true); //Зажигаем зеленый светодиод
+        gpioDriver.turnOnReadyLed(PinState.HIGH); //Зажигаем зеленый светодиод
 
         try {
             if (localDB.isAnyEmptyCell()){
-                gpioDriver.turnOnFullLed(false);
+                gpioDriver.turnOnFullLed(PinState.LOW);
             }else {
-                gpioDriver.turnOnFullLed(true);
+                gpioDriver.turnOnFullLed(PinState.HIGH);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -54,6 +55,7 @@ public class WardrobeLogic {
                         localDB.emptyCell(card);
                         System.out.println("Card exist");
                         log.info("Карте " + card + " соответствует ячейка № " + cell + ". Ячейка освобождена");
+                        gpioDriver.shineDown();
 
                     }else{
                         //Проверяем наличие свободной ячейки, получаем ее номер и записываем в базу с сохранением номера карочки, открываем ячейку
@@ -67,12 +69,19 @@ public class WardrobeLogic {
                         }
                     }
                 }
+                gpioDriver.turnOnReadyLed(PinState.LOW);
+                Thread.sleep(1000);
+                logic.skipLines();
+                gpioDriver.turnOnReadyLed(PinState.HIGH);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (SQLException e) {
                 e.printStackTrace();
+            } catch (InterruptedException e){
+                e.printStackTrace();
             }
         }
+
     }
 
 
@@ -100,5 +109,18 @@ public class WardrobeLogic {
         String log4jConfigPath = "/home/impuls/Projects/WardrobeIDEA/Wardrobe-master/src/main/resources/log4j.properties";
         PropertyConfigurator.configure(log4jConfigPath);
 
+    }
+
+    public void skipLines(){
+        String line;
+        while (true) {
+            try {
+                if ((line = reader.readLine()) != null){
+                    reader.readLine();
+                }else break;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

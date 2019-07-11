@@ -7,13 +7,13 @@ import com.pi4j.util.CommandArgumentParser;
 Управление контактами
  */
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class GPIOdriver {
 
     private static GPIOdriver instance = null;
 
-    private LinkedList<GpioPinDigitalOutput> pins = new LinkedList<GpioPinDigitalOutput>();
+    private ArrayList<GpioPinDigitalOutput> pins = new ArrayList<GpioPinDigitalOutput>();
 
     private GPIOdriver() {
         initialize();
@@ -108,27 +108,27 @@ public class GPIOdriver {
         }
     }
 
-    public void turnOnReadyLed(boolean state){
+    public void turnOnReadyLed(PinState state){
         GpioPinDigitalOutput pin = pins.get(8);
-        if (state){
+        if (state.isHigh()){
             pin.high();
         }else {
             pin.low();
         }
     }
 
-    public void turnOnErrLed(boolean state){
+    public void turnOnErrLed(PinState state){
         GpioPinDigitalOutput pin = pins.get(9);
-        if (state){
+        if (state.isHigh()){
             pin.high();
         }else {
             pin.low();
         }
     }
 
-    public void turnOnFullLed(boolean state){
+    public void turnOnFullLed(PinState state){
         GpioPinDigitalOutput pin = pins.get(10);
-        if (state){
+        if (state.isHigh()){
             pin.high();
         }else {
             pin.low();
@@ -151,6 +151,34 @@ public class GPIOdriver {
         red.pulse(500, true);
         blue.pulse(500, true);
         green.pulse(500, true);
+
+        green.setState(greenState);
+        blue.setState(blueState);
+        red.setState(redState);
+    }
+
+    public void shineDown(){
+        GpioPinDigitalOutput green = pins.get(8);
+        GpioPinDigitalOutput blue = pins.get(9);
+        GpioPinDigitalOutput red = pins.get(10);
+
+        PinState greenState = green.getState();
+        PinState blueState = blue.getState();
+        PinState redState = red.getState();
+
+        green.setState(PinState.LOW);
+        blue.setState(PinState.LOW);
+        red.setState(PinState.LOW);
+
+        green.pulse(500, true);
+        blue.pulse(500, true);
+        red.pulse(500, true);
+
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         green.setState(greenState);
         blue.setState(blueState);
