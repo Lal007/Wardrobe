@@ -48,6 +48,7 @@ public class WardrobeLogic {
                             int cell = localDB.getIdByCard(card);
                             gpioDriver.open(cell);
                             localDB.emptyCell(card);
+                            logic.checkCapacity();
                             System.out.println("Card exist");
                             log.info("Карте " + card + " соответствует ячейка № " + cell + ". Ячейка освобождена");
                             gpioDriver.shineDown();
@@ -58,6 +59,7 @@ public class WardrobeLogic {
                             if(localDB.isAnyEmptyCell()){
                                 int cell = localDB.getEmptyCell();
                                 localDB.takeCell(cell, card);
+                                logic.checkCapacity();
                                 System.out.println("Empty cell = " + cell);
                                 gpioDriver.open(cell);
                                 log.info("Карте " + card + " присвоена пустая ячейка № " + cell);
