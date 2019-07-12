@@ -30,8 +30,7 @@ public class WardrobeLogic {
 
         logic.init(); // Инициализация всех подключений
         gpioDriver.turnOnReadyLed(PinState.HIGH); //Зажигаем зеленый светодиод
-
-        logic.checkCapacity();
+        logic.checkCapacity(); //Проверка на загруженность системы хранения
 
         while (true) { // Основной цикл
             System.out.println("Wait for card");            
