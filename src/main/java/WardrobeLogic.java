@@ -20,6 +20,8 @@ public class WardrobeLogic {
 
     private static BufferedReader reader;
 
+    private static boolean ready = false;
+
     private static final Logger log = Logger.getLogger(WardrobeLogic.class);
 
     public static void main(String[] args) {
@@ -48,36 +50,35 @@ public class WardrobeLogic {
                     System.out.println("Card = " + card);
                     log.info("Считана карта: " + card);
 
-                    if (localDB.isExist(card)){ // Если карта есть в базе
-                        //Открываем ячейку, удаляем запись из базы
-                        int cell = localDB.getIdByCard(card);
-                        gpioDriver.open(cell);
-                        localDB.emptyCell(card);
-                        System.out.println("Card exist");
-                        log.info("Карте " + card + " соответствует ячейка № " + cell + ". Ячейка освобождена");
-                        gpioDriver.shineDown();
-
-                    }else{
-                        //Проверяем наличие свободной ячейки, получаем ее номер и записываем в базу с сохранением номера карочки, открываем ячейку
-                        if(localDB.isAnyEmptyCell()){
-                            int cell = localDB.getEmptyCell();
-                            localDB.takeCell(cell, card);
-                            System.out.println("Empty cell = " + cell);
+                    if (ready){
+                        if (localDB.isExist(card)){ // Если карта есть в базе
+                            //Открываем ячейку, удаляем запись из базы
+                            int cell = localDB.getIdByCard(card);
                             gpioDriver.open(cell);
-                            log.info("Карте " + card + " присвоена пустая ячейка № " + cell);
-                            gpioDriver.shineUP();
+                            localDB.emptyCell(card);
+                            System.out.println("Card exist");
+                            log.info("Карте " + card + " соответствует ячейка № " + cell + ". Ячейка освобождена");
+                            gpioDriver.shineDown();
+                            logic.delay();
+
+                        }else{
+                            //Проверяем наличие свободной ячейки, получаем ее номер и записываем в базу с сохранением номера карочки, открываем ячейку
+                            if(localDB.isAnyEmptyCell()){
+                                int cell = localDB.getEmptyCell();
+                                localDB.takeCell(cell, card);
+                                System.out.println("Empty cell = " + cell);
+                                gpioDriver.open(cell);
+                                log.info("Карте " + card + " присвоена пустая ячейка № " + cell);
+                                gpioDriver.shineUP();
+                                logic.delay();
+                            }
                         }
                     }
+
                 }
-                gpioDriver.turnOnReadyLed(PinState.LOW);
-                Thread.sleep(1000);
-                logic.skipLines();
-                gpioDriver.turnOnReadyLed(PinState.HIGH);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (SQLException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e){
                 e.printStackTrace();
             }
         }
@@ -109,6 +110,8 @@ public class WardrobeLogic {
         String log4jConfigPath = "/home/impuls/Projects/WardrobeIDEA/Wardrobe-master/src/main/resources/log4j.properties";
         PropertyConfigurator.configure(log4jConfigPath);
 
+        ready = true;
+
     }
 
     public void skipLines(){
@@ -122,5 +125,23 @@ public class WardrobeLogic {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void delay(){
+        new Thread(new Runnable() {
+            public void run() {
+                gpioDriver.turnOnReadyLed(PinState.LOW);
+                ready = false;
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                gpioDriver.turnOnReadyLed(PinState.HIGH);
+                ready = true;
+            }
+        }).start();
     }
 }
