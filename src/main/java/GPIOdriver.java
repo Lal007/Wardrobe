@@ -148,6 +148,12 @@ public class GPIOdriver {
         blue.setState(PinState.LOW);
         red.setState(PinState.LOW);
 
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         red.pulse(500, true);
         blue.pulse(500, true);
         green.pulse(500, true);
@@ -169,6 +175,12 @@ public class GPIOdriver {
         green.setState(PinState.LOW);
         blue.setState(PinState.LOW);
         red.setState(PinState.LOW);
+
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         green.pulse(500, true);
         blue.pulse(500, true);

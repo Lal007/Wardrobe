@@ -24,24 +24,16 @@ public class WardrobeLogic {
 
     private static final Logger log = Logger.getLogger(WardrobeLogic.class);
 
-    public static void main(String[] args) {
+    private static WardrobeLogic logic = new WardrobeLogic();
 
-        WardrobeLogic logic = new WardrobeLogic();
+    public static void main(String[] args) {
 
         logic.init(); // Инициализация всех подключений
         gpioDriver.turnOnReadyLed(PinState.HIGH); //Зажигаем зеленый светодиод
 
-        try {
-            if (localDB.isAnyEmptyCell()){
-                gpioDriver.turnOnFullLed(PinState.LOW);
-            }else {
-                gpioDriver.turnOnFullLed(PinState.HIGH);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        logic.checkCapacity();
 
-        while (true){ // Основной цикл
+        while (true) { // Основной цикл
             System.out.println("Wait for card");            
             
             String card;
@@ -82,9 +74,7 @@ public class WardrobeLogic {
                 e.printStackTrace();
             }
         }
-
     }
-
 
     public void init(){
 
@@ -114,16 +104,15 @@ public class WardrobeLogic {
 
     }
 
-    public void skipLines(){
-        String line;
-        while (true) {
-            try {
-                if ((line = reader.readLine()) != null){
-                    reader.readLine();
-                }else break;
-            } catch (IOException e) {
-                e.printStackTrace();
+    public void checkCapacity(){
+        try {
+            if (localDB.isAnyEmptyCell()){
+                gpioDriver.turnOnFullLed(PinState.LOW);
+            }else {
+                gpioDriver.turnOnFullLed(PinState.HIGH);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
