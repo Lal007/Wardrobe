@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.concurrent.Executors;
 
 public class RemoteDB {
 
@@ -13,13 +14,19 @@ public class RemoteDB {
         ResultSet rs = null;
 
         conn = DriverManager.getConnection(connectionUrl);
+        conn.setNetworkTimeout(Executors.newSingleThreadExecutor(), 2000);
         stmt = conn.createStatement();
+
         rs = stmt.executeQuery(testSQL);
 
-        // Проверка подключения
-//        if (rs.next()) {
-//            System.out.println("Успешное подключение!");
-//        }
+        return rs.next();
+    }
+
+    public boolean isConnect() throws SQLException {
+         //Проверка подключения
+        String testSQL = ("SELECT 1;");
+        ResultSet rs = stmt.executeQuery(testSQL);
+
         return rs.next();
     }
 

@@ -103,6 +103,7 @@ public class WardrobeLogic {
                             logic.takeCell(card, remoteDB.getName(prefix, cardCode));
                         }else {
                             gpioDriver.pulseErrLed();
+                            logic.checkConnect();
                         }
                     }
 
@@ -126,6 +127,30 @@ public class WardrobeLogic {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void checkConnect() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true){
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        if (remoteDB.isConnect()){
+                            break;
+                        }else {
+                            gpioDriver.turnOnReadyLed(PinState.LOW);
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
 
     public void emptyCell(String card) throws SQLException {
