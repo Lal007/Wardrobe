@@ -29,7 +29,13 @@ public class RemoteDB {
         ResultSet rs = stmt.executeQuery(sql);
 
         return rs.next();
+    }
 
+    public String getName(int prefix, int code) throws SQLException {
+        String sql = String.format("SELECT * FROM [RedRoseIII].[dbo].[Cards], [RedRoseIII].[dbo].[Users] WHERE Cards.CardPrefix = '%d' AND Cards.CardCode = '%d' AND Cards.UserID = Users.ID;", prefix, code);
 
+        ResultSet rs = stmt.executeQuery(sql);
+
+        return rs.getString("Name");
     }
 }

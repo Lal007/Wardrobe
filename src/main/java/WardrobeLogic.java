@@ -97,8 +97,8 @@ public class WardrobeLogic {
                             logic.emptyCell(card);
 
                         }else if (remoteDBConnected && remoteDB.isCardValid(prefix, cardCode)){
-                            //Проверяем наличие свободной ячейки, получаем ее номер и записываем в базу с сохранением номера карточки, открываем ячейку
-                            logic.takeCell(card);
+                            //Проверяем наличие свободной ячейки, получаем ее номер и записываем в базу с сохранением номера карточки и имени, открываем ячейку
+                            logic.takeCell(card, remoteDB.getName(prefix, cardCode));
                         }else {
                             gpioDriver.pulseErrLed();
                         }
@@ -108,6 +108,7 @@ public class WardrobeLogic {
             } catch (IOException e) {
                 log.error(e.toString());
             } catch (SQLException e) {
+                gpioDriver.pulseErrLed();
                 logic.reconnectRemoteDB();
             }
         }
