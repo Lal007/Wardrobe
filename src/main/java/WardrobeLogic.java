@@ -146,7 +146,7 @@ public class WardrobeLogic {
                             gpioDriver.turnOnReadyLed(PinState.LOW);
                         }
                     } catch (SQLException e) {
-                        log.error("Connection closed");
+                        log.error("Подключение закрыто");
                         gpioDriver.turnOnReadyLed(PinState.LOW);
                         logic.reconnectRemoteDB();
                         break;
