@@ -36,6 +36,8 @@ public class RemoteDB {
 
         ResultSet rs = stmt.executeQuery(sql);
 
-        return rs.getString("Name");
+        if (rs.next()){
+            return rs.getString("Name");
+        }else return "Имя не найдено";
     }
 }

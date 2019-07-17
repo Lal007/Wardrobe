@@ -34,6 +34,8 @@ public class WardrobeLogic {
         logic.initRemoteDB();
         if (remoteDBConnected){
             gpioDriver.turnOnReadyLed(PinState.HIGH); //Зажигаем зеленый светодиод
+        }else{
+            gpioDriver.pulseReadyLed();//Мигаем зеленым светодиодом
         }
         logic.checkCapacity(); //Проверка на загруженность системы хранения
         logic.MainLogic();
