@@ -126,6 +126,11 @@ public class GPIOdriver {
         }
     }
 
+    public void pulseErrLed(){
+        GpioPinDigitalOutput pin = pins.get(9);
+        pin.pulse(1000, true);
+    }
+
     public void turnOnFullLed(PinState state){
         GpioPinDigitalOutput pin = pins.get(10);
         if (state.isHigh()){
