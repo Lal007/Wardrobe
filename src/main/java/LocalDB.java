@@ -11,7 +11,7 @@ public class LocalDB {
     public void tryConnect() throws ClassNotFoundException, SQLException{
         conn = null;
         Class.forName("org.sqlite.JDBC");
-        conn = DriverManager.getConnection("jdbc:sqlite:/home/impuls/Projects/WardrobeIDEA/Wardrobe-master/src/main/resources/DbCells.db");
+        conn = DriverManager.getConnection("jdbc:sqlite:/home/impuls/WardrobePro/resources/DbCells.db");
 
         System.out.println("Connect successful");
 
