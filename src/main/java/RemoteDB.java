@@ -25,9 +25,10 @@ public class RemoteDB {
     public boolean isConnect() throws SQLException {
          //Проверка подключения
         String testSQL = ("SELECT 1;");
-        ResultSet rs = stmt.executeQuery(testSQL);
-
-        return rs.next();
+        if (stmt != null){
+            ResultSet rs = stmt.executeQuery(testSQL);
+            return rs.next();
+        }else return false;
     }
 
     public boolean isCardValid(int prefix, int code) throws SQLException {
